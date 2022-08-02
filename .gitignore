@@ -31,4 +31,12 @@
 *.out
 *.app
 
+
+# Random shit
 deploy
+*.3dsx
+*.elf
+*.smdh
+build/
+
+.vscode/
