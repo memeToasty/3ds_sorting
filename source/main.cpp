@@ -6,12 +6,15 @@
 #include "menu.h"
 #include <vector>
 #include <cstdlib>
+#include <math.h>
 
 #define SCREEN_WIDTH  400
 #define SCREEN_HEIGHT 240
 
-// TODO:
-// Refactor Menu Button handling
+#define SAMPLERATE 22050
+#define SAMPLESPERBUF (SAMPLERATE / 30)
+#define BYTESPERSAMPLE 4
+
 
 
 // Input Stuff
@@ -30,6 +33,26 @@ Menu *algoMenu;
 Menu *settingsMenu;
 
 Menu *activeMenu;
+
+// Sound Stuff
+ndspWaveBuf waveBuf[2];
+u32 *audioBuffer;
+
+void fill_buffer(void *audioBuffer,size_t offset, size_t size, int frequency ) {
+
+	u32 *dest = (u32*)audioBuffer;
+
+	for (int i=0; i< (int) size; i++) {
+
+		s16 sample = INT16_MAX * sin(frequency*(2*M_PI)*(offset+i)/SAMPLERATE);
+
+		dest[i] = (sample<<16) | (sample & 0xffff);
+	}
+
+	DSP_FlushDataCache(audioBuffer,size);
+
+}
+
 // Main menu text
 const std::vector<std::string> MENU_TEXT = {
 	"Sorting Algorithms",
@@ -82,6 +105,14 @@ int atoui(const char* str){
     return num;
 }
 
+void accessElement(unsigned int accessedIndex) {
+	activeIndex = accessedIndex;
+	if (waveBuf[0].status == NDSP_WBUF_DONE) {
+		fill_buffer(audioBuffer,0, SAMPLESPERBUF * 2, 300 + (array[activeIndex] * 20));
+		ndspChnWaveBufAdd(0, &waveBuf[0]);
+	}
+}
+
 
 void switchMenu(Menu* menu)
 {
@@ -90,6 +121,13 @@ void switchMenu(Menu* menu)
 }
 void ThreadSleep(unsigned int ms) {
 	svcSleepThread(1000000ULL * (u32) ms);
+}
+
+void finishSorting() {
+	for (unsigned short i = 0; i < arrayLen; ++i) {
+		accessElement(i);
+		ThreadSleep(1000 / arrayLen);
+	}
 }
 // Sorting algorithms
 void swap(unsigned short index1, unsigned short index2) {
@@ -104,11 +142,12 @@ void insertionSort(void* arg) {
 		while (j > 0 && array[j] < array[j-1]) {
 			swap(j,j-1);
 			j--;
-			activeIndex = j;
+			accessElement(j);
 			ThreadSleep(delayMs);
 		}
 	}
 	doneSorting = true;
+	finishSorting();
 }
 
 void merge(unsigned int p, unsigned int q, unsigned int r) {
@@ -135,7 +174,7 @@ void merge(unsigned int p, unsigned int q, unsigned int r) {
 	unsigned short leftHead = 0;
 	unsigned short rightHead = 0;
 	for (unsigned short i = p; i <= r; i++) {
-		activeIndex = i;
+		accessElement(i);
 		ThreadSleep(delayMs);
 		if (left[leftHead] < right[rightHead]) {
 			array[i] = left[leftHead];
@@ -160,6 +199,8 @@ void mergeSort(unsigned int p, unsigned int r) {
 
 void mergeSortInit(void* arg) {
 	mergeSort(0, arrayLen-1);
+	doneSorting = true;
+	finishSorting();
 }
 
 void drawArray() {
@@ -288,6 +329,34 @@ int main(int argc, char *argv[])
 	consoleInit(GFX_BOTTOM, NULL);
 
 
+	// Initialize sounds
+	audioBuffer = (u32*)linearAlloc(SAMPLESPERBUF*BYTESPERSAMPLE*2);
+
+	ndspInit();
+
+	ndspSetOutputMode(NDSP_OUTPUT_STEREO);
+
+	ndspChnSetInterp(0, NDSP_INTERP_LINEAR);
+	ndspChnSetRate(0, SAMPLERATE);
+	ndspChnSetFormat(0, NDSP_FORMAT_STEREO_PCM16);
+
+	float mix[12];
+	memset(mix, 0, sizeof(mix));
+	mix[0] = 1.0;
+	mix[1] = 1.0;
+	ndspChnSetMix(0, mix);
+
+	memset(waveBuf,0,sizeof(waveBuf));
+	waveBuf[0].data_vaddr = &audioBuffer[0];
+	waveBuf[0].nsamples = SAMPLESPERBUF;
+	waveBuf[1].data_vaddr = &audioBuffer[SAMPLESPERBUF];
+	waveBuf[1].nsamples = SAMPLESPERBUF;
+
+	//fill_buffer(audioBuffer,0, SAMPLESPERBUF * 2, 460);
+
+	ndspChnWaveBufAdd(0, &waveBuf[0]);
+	//ndspChnWaveBufAdd(0, &waveBuf[1]);
+
 	// Initialize random seed
 	srand(time(NULL));
 	// Create screen
@@ -344,6 +413,9 @@ int main(int argc, char *argv[])
 			doneSorting = false;
 		}
 	}
+	
+	ndspExit();
+	linearFree(audioBuffer);
 
 	C2D_Fini();
 	C3D_Fini();
