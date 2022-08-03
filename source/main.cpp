@@ -85,6 +85,7 @@ unsigned int delayMs = 2;
 C3D_RenderTarget* top;
 u32 bar_clr;
 u32 active_clr;
+u32 clrClear;
 const size_t maxBars = 9500;
 
 // Threading vars
@@ -126,7 +127,7 @@ void ThreadSleep(unsigned int ms) {
 void finishSorting() {
 	for (unsigned short i = 0; i < arrayLen; ++i) {
 		accessElement(i);
-		ThreadSleep(1000 / arrayLen);
+		ThreadSleep((unsigned int) (1000.0 / (double) arrayLen));
 	}
 }
 // Sorting algorithms
@@ -204,9 +205,13 @@ void mergeSortInit(void* arg) {
 }
 
 void drawArray() {
-	const float width = (float)SCREEN_WIDTH / arrayLen;
+	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+	C2D_TargetClear(top, clrClear);
+	C2D_SceneBegin(top);
+
+	const float width = (float) SCREEN_WIDTH / (float) arrayLen;
 	for (unsigned int i = 0; i < arrayLen; i++) {
-		const float height = (float)(SCREEN_HEIGHT / maxArrayVal) * array[i];
+		const float height = (float) ((float) SCREEN_HEIGHT / (float) maxArrayVal) * array[i];
 		const float x = i * width;
 		const float y = SCREEN_HEIGHT - height;
 		if (i == activeIndex) {
@@ -224,8 +229,13 @@ void initArray() {
 	if (array == NULL) {
 		exit(1);
 	}
-	for (unsigned int i = 0; i < arrayLen; i++) {
-		array[i] = rand() % maxArrayVal;
+	for (unsigned int i = 0; i < arrayLen; ++i) {
+		//array[i] = rand() % maxArrayVal;
+		array[i] = (unsigned int) (( (double) maxArrayVal / (double) arrayLen) * (i+1));
+	}
+
+	for (unsigned short i = 0; i < arrayLen; ++i) {
+		swap(rand() % arrayLen, i);
 	}
 	arrayUpdate = true;
 }
@@ -361,7 +371,7 @@ int main(int argc, char *argv[])
 	srand(time(NULL));
 	// Create screen
 	top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
-	u32 clrClear = C2D_Color32(0xFF, 0xD8, 0xB0, 0x68);
+	clrClear = C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF);
 	bar_clr = C2D_Color32(0x00, 0x00, 0x00, 0xFF);
 	active_clr = C2D_Color32(0xFF, 0x00, 0x00, 0xFD);
 
