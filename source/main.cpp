@@ -5,6 +5,7 @@
 #include <citro2d.h>
 #include "menu.h"
 #include <vector>
+#include <cstdlib>
 
 #define SCREEN_WIDTH  400
 #define SCREEN_HEIGHT 240
@@ -46,6 +47,7 @@ const std::vector<std::string> ALGO_TEXT = {
 const std::vector<std::string> SETTINGS_TEXT = {
 	"Array Elements",
 	"Delay (ms)",
+	"New Array",
 	"Back"};
 
 int selected = 0;
@@ -65,7 +67,7 @@ const size_t maxBars = 9500;
 // Threading vars
 Thread sortThread;
 s32 prio = 0;
-#define STACKSIZE (4 * 1024)
+#define STACKSIZE (32 * 1024)
 
 volatile bool doneSorting = false;
 volatile unsigned int activeIndex = 0;
@@ -83,6 +85,7 @@ int atoui(const char* str){
 
 void switchMenu(Menu* menu)
 {
+	selected = 0;
 	activeMenu = menu;
 }
 void ThreadSleep(unsigned int ms) {
@@ -95,7 +98,7 @@ void swap(unsigned short index1, unsigned short index2) {
 	array[index2] = temp;
 
 }
-void insertionSort(void* args) {
+void insertionSort(void* arg) {
 	for (unsigned int i = 1; i < arrayLen; i++) {
 		unsigned short j = i;
 		while (j > 0 && array[j] < array[j-1]) {
@@ -106,6 +109,57 @@ void insertionSort(void* args) {
 		}
 	}
 	doneSorting = true;
+}
+
+void merge(unsigned int p, unsigned int q, unsigned int r) {
+	// Make 2 new Arrays with 1 extra space for the sentinel cards
+	// Sizes of both arrays
+	unsigned int leftSize = (q-p+1)+1;
+	unsigned int rightSize = (r-q)+1;
+	unsigned int* left = (unsigned int*) malloc(leftSize * sizeof(unsigned int));
+	unsigned int* right = (unsigned int*) malloc(rightSize * sizeof(unsigned int));
+	
+	// Fill arrays with respective values
+	for (unsigned short i = 0; i < leftSize; i++) {
+		left[i] = array[p+i];
+	}
+
+	for (unsigned short i = 0; i < rightSize; i++) {
+		right[i] = array[q+1+i];
+	}
+
+	//add sentinels
+	left[leftSize-1] = UINT8_MAX;
+	right[rightSize-1] = UINT8_MAX;
+
+	unsigned short leftHead = 0;
+	unsigned short rightHead = 0;
+	for (unsigned short i = p; i <= r; i++) {
+		activeIndex = i;
+		ThreadSleep(delayMs);
+		if (left[leftHead] < right[rightHead]) {
+			array[i] = left[leftHead];
+			leftHead++;
+		} else {
+			array[i] = right[rightHead];
+			rightHead++;
+		}
+	}
+
+	free(left);
+	free(right);
+}
+void mergeSort(unsigned int p, unsigned int r) {
+	if (p < r) {
+		unsigned int q = (p+r) / 2;
+		mergeSort(p,q);
+		mergeSort(q+1,r);
+		merge(p,q,r);
+	}
+}
+
+void mergeSortInit(void* arg) {
+	mergeSort(0, arrayLen-1);
 }
 
 void drawArray() {
@@ -153,15 +207,14 @@ void settingsMenuHandler()
 		case 0:
 			arrayLen = inputNum();
 			initArray();
-			if (array == NULL) 
-			{
-				switchMenu(mainMenu);
-			}
 			break;
 		case 1:
 			delayMs = inputNum();
 			break;
 		case 2:
+			initArray();
+			break;
+		case 3:
 			switchMenu(mainMenu);
 			break;
 
@@ -186,6 +239,8 @@ void algoMenuHandler()
 		case 0:
 			sortThread = threadCreate(insertionSort, NULL, STACKSIZE, prio-1, 1, false);
 			break;
+		case 1:
+			sortThread = threadCreate(mergeSortInit, NULL, STACKSIZE, prio-1, 1, false);
 		case 3:
 			switchMenu(mainMenu);
 			break;
@@ -232,6 +287,9 @@ int main(int argc, char *argv[])
 	C2D_Prepare();
 	consoleInit(GFX_BOTTOM, NULL);
 
+
+	// Initialize random seed
+	srand(time(NULL));
 	// Create screen
 	top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
 	u32 clrClear = C2D_Color32(0xFF, 0xD8, 0xB0, 0x68);
@@ -245,11 +303,6 @@ int main(int argc, char *argv[])
 	settingsMenu = new Menu(SETTINGS_TEXT, &kDown, &selected, &settingsMenuHandler);
 	algoMenu = new Menu(ALGO_TEXT, &kDown, &selected, &algoMenuHandler);
 
-	Menu *menus[] = {
-		mainMenu,
-		settingsMenu,
-		algoMenu
-	};
 	activeMenu = mainMenu;
 
 	initArray();
@@ -287,6 +340,7 @@ int main(int argc, char *argv[])
 		if (doneSorting) {
 			threadJoin(sortThread, 10000000LL);
 			threadFree(sortThread);
+			activeIndex = UINT32_MAX;
 			doneSorting = false;
 		}
 	}
