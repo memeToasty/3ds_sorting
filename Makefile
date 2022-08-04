@@ -41,6 +41,12 @@ GRAPHICS	:=	gfx
 ROMFS		:=	romfs
 GFXBUILD	:=	$(ROMFS)/gfx
 
+APP_TITLE   := Sorting-Algorithms
+APP_DESCRIPTION := A visualisation of sorting algorithms
+APP_AUTHOR := memeToasty
+
+ICON        := meta/icon.png
+
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
