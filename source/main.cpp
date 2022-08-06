@@ -61,6 +61,7 @@ const std::vector<std::string> ALGO_TEXT = {
 	"Insertion Sort",
 	"Merge Sort",
 	"Heap Sort",
+	"Quick Sort",
 	"Back"};
 
 // Settings text
@@ -141,6 +142,37 @@ void swap(unsigned short index1, unsigned short index2)
 	array[index1] = array[index2];
 	array[index2] = temp;
 }
+
+int partition(int p, int r) {
+	unsigned int pivot = array[r];
+	int i = p-1;
+	for (int j = p; j < r; j++) {
+		if (array[j] <= pivot) {
+			i++;
+			accessElement(j);
+			ThreadSleep(delayMs);
+			swap(j,i);
+		}
+	}
+	i++;
+	accessElement(r);
+	ThreadSleep(delayMs);
+	swap(r,i);
+	return i;
+}
+
+void quickSort(int p, int r) {
+	if (p < r) {
+		int q = partition(p,r);
+		quickSort(p,q-1);
+		quickSort(q+1,r);	
+	}
+}
+
+void quickSortInit(void *arg) {
+	quickSort(0, arrayLen-1);
+}
+
 void insertionSort(void *arg)
 {
 	for (unsigned int i = 1; i < arrayLen; i++)
@@ -373,7 +405,11 @@ void algoMenuHandler()
 			break;
 		case 2:
 			sortThread = threadCreate(heapSort, NULL, STACKSIZE, prio - 1, 1, false);
+			break;
 		case 3:
+			sortThread = threadCreate(quickSortInit, NULL, STACKSIZE, prio - 1, 1, false);
+			break;
+		case 4:
 			switchMenu(mainMenu);
 			break;
 
