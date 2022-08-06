@@ -4,7 +4,9 @@
 #include <3ds.h>
 #include <citro2d.h>
 #include <string>
+
 #include "menu.h"
+#include "main.h"
 
 void Menu::clearConsole()
 {
@@ -49,4 +51,10 @@ void Menu::handleInput()
             *selected = menuLen - 1;
         }
     }
+}
+
+void switchMenu(Menu *menu)
+{
+	selected = 0;
+	activeMenu = menu;
 }
