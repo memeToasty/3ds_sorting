@@ -1,6 +1,5 @@
 #ifndef ALGORITHMS_H
 #define ALGORITHMS_H
-
 void swap(unsigned short index1, unsigned short index2);
 
 

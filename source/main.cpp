@@ -7,9 +7,8 @@
 #include <cstdlib>
 #include <math.h>
 
-#include "main.h"
-#include "menu.h"
 #include "algorithms.h"
+#include "globals.h"
 
 void fill_buffer(void *audioBuffer, size_t offset, size_t size, int frequency)
 {
@@ -221,6 +220,11 @@ int main(int argc, char *argv[])
 
 	doneSorting = false;
 	activeIndex = 0;
+
+	maxArrayVal = 100;
+	maxBars = 9500;
+
+	prio = 0;
 
 	gfxInitDefault();
 	C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);

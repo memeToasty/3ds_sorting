@@ -1,5 +1,6 @@
+
 #include "algorithms.h"
-#include "main.h"
+#include "globals.h"
 
 void swap(unsigned short index1, unsigned short index2)
 {

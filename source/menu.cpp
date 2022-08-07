@@ -6,7 +6,6 @@
 #include <string>
 
 #include "menu.h"
-#include "main.h"
 
 void Menu::clearConsole()
 {
