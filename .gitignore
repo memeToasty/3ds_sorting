@@ -39,5 +39,6 @@ deploy
 *.smdh
 build/
 *.cia
+*.lst
 
 .vscode/
