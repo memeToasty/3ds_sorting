@@ -37,4 +37,8 @@ class Menu
 
 void switchMenu(Menu *menu);
 
+void settingsMenuHandler();
+void algoMenuHandler();
+void mainMenuHandler();
+
 #endif

@@ -14,8 +14,6 @@
 #define STACKSIZE (32 * 1024)
 
 // Input Stuff
-static SwkbdState swkbd;
-static char mybuf[10];
 extern SwkbdButton button;
 extern u32 kDown;
 

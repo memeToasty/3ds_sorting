@@ -7,6 +7,8 @@
 #include <3ds.h>
 #include <citro2d.h>
 
+SwkbdState swkbd;
+char mybuf[10];
 
 void accessElement(unsigned int accessedIndex)
 {
