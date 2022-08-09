@@ -1,6 +1,10 @@
-
 #include "algorithms.h"
 #include "globals.h"
+#include "visuals.h"
+#include "helpers.h"
+
+#include <math.h>
+
 
 void swap(unsigned short index1, unsigned short index2)
 {
@@ -9,7 +13,7 @@ void swap(unsigned short index1, unsigned short index2)
 	array[index2] = temp;
 }
 
-int partition(int p, int r) {
+int partition(unsigned int* array, unsigned int delayMs, int p, int r) {
 	unsigned int pivot = array[r];
 	int i = p-1;
 	for (int j = p; j < r; j++) {
@@ -35,7 +39,7 @@ void quickSort(int p, int r) {
 	}
 }
 
-void quickSortInit(void *arg) {
+void quickSortInit(unsigned int arrayLen, void *arg) {
 	quickSort(0, arrayLen-1);
 }
 

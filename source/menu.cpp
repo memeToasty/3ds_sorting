@@ -1,11 +1,12 @@
+#include "globals.h"
+#include "menu.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <3ds.h>
 #include <citro2d.h>
 #include <string>
-
-#include "menu.h"
 
 void Menu::clearConsole()
 {

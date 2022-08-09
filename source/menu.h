@@ -3,6 +3,9 @@
 
 #include <string>
 #include <vector>
+#include <stdlib.h>
+#include <stdio.h>
+#include <3ds.h>
 
 // Main menu text
 extern const std::vector<std::string> MENU_TEXT  = {
@@ -25,9 +28,6 @@ extern const std::vector<std::string> SETTINGS_TEXT = {
     "New Array",
     "Back"};
 
-
-// Selected menu item
-int selected;
 
 class Menu
 {
