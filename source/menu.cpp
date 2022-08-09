@@ -8,6 +8,25 @@
 #include <citro2d.h>
 #include <string>
 
+const std::vector<std::string> MENU_TEXT = {
+	"Sorting Algorithms",
+	"Settings",
+	"Exit"};
+
+const std::vector<std::string> ALGO_TEXT = {
+    "Insertion Sort",
+    "Merge Sort",
+    "Heap Sort",
+    "Quick Sort",
+    "Back"};
+
+const std::vector<std::string> SETTINGS_TEXT = {
+    "Array Elements",
+    "Delay (ms)",
+    "New Array",
+    "Back"};
+
+
 void Menu::clearConsole()
 {
     printf("\x1b[2J");

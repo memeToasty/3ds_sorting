@@ -13,7 +13,7 @@ void swap(unsigned short index1, unsigned short index2)
 	array[index2] = temp;
 }
 
-int partition(unsigned int* array, unsigned int delayMs, int p, int r) {
+int partition(int p, int r) {
 	unsigned int pivot = array[r];
 	int i = p-1;
 	for (int j = p; j < r; j++) {
@@ -39,7 +39,7 @@ void quickSort(int p, int r) {
 	}
 }
 
-void quickSortInit(unsigned int arrayLen, void *arg) {
+void quickSortInit(void *arg) {
 	quickSort(0, arrayLen-1);
 }
 

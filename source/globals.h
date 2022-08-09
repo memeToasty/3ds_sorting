@@ -20,7 +20,7 @@ extern SwkbdButton button;
 extern u32 kDown;
 
 
-extern const char *selector = ">";
+extern const char *selector;
 extern int selected;
 
 // Define Menus
@@ -37,7 +37,7 @@ extern u32 *audioBuffer;
 // Array Stuff
 extern unsigned int *array;
 extern unsigned int arrayLen;
-extern const unsigned int maxArrayVal = 100;
+extern const unsigned int maxArrayVal;
 extern unsigned int delayMs;
 
 // Render stuff
@@ -46,7 +46,8 @@ extern u32 bar_clr;
 extern u32 active_clr;
 extern u32 clrClear;
 extern u32 doneClr;
-extern const size_t maxBars = 9500;
+extern const size_t maxBars;
+
 
 // Threading vars
 extern Thread sortThread;

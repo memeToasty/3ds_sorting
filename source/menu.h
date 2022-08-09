@@ -8,25 +8,13 @@
 #include <3ds.h>
 
 // Main menu text
-extern const std::vector<std::string> MENU_TEXT  = {
-	"Sorting Algorithms",
-	"Settings",
-	"Exit"};
+extern const std::vector<std::string> MENU_TEXT;
 
 // Algo menu text
-extern const std::vector<std::string> ALGO_TEXT = {
-    "Insertion Sort",
-    "Merge Sort",
-    "Heap Sort",
-    "Quick Sort",
-    "Back"};
+extern const std::vector<std::string> ALGO_TEXT;
 
 // Settings text
-extern const std::vector<std::string> SETTINGS_TEXT = {
-    "Array Elements",
-    "Delay (ms)",
-    "New Array",
-    "Back"};
+extern const std::vector<std::string> SETTINGS_TEXT;
 
 
 class Menu
