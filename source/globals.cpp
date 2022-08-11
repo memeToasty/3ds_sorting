@@ -24,6 +24,7 @@ int selected = 0;
 unsigned int arrayLen = 10;
 unsigned int delayMs = 2;
 
+short drawMenu = 1;
 Menu *mainMenu;
 Menu *algoMenu;
 Menu *settingsMenu;

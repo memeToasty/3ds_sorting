@@ -13,8 +13,6 @@
 #include <cstdlib>
 #include <math.h>
 
-
-
 int main(int argc, char *argv[])
 {
 	gfxInitDefault();
@@ -46,10 +44,7 @@ int main(int argc, char *argv[])
 	waveBuf[1].data_vaddr = &audioBuffer[SAMPLESPERBUF];
 	waveBuf[1].nsamples = SAMPLESPERBUF;
 
-	// fill_buffer(audioBuffer,0, SAMPLESPERBUF * 2, 460);
-
 	ndspChnWaveBufAdd(0, &waveBuf[0]);
-	// ndspChnWaveBufAdd(0, &waveBuf[1]);
 
 	// Initialize random seed
 	srand(time(NULL));
@@ -61,10 +56,9 @@ int main(int argc, char *argv[])
 	doneClr = C2D_Color32(0x00, 0xFF, 0x00, 0xFF);
 
 	// Initialize Menus
-
-	mainMenu = new Menu(MENU_TEXT, &kDown, &selected, &mainMenuHandler);
-	settingsMenu = new Menu(SETTINGS_TEXT, &kDown, &selected, &settingsMenuHandler);
-	algoMenu = new Menu(ALGO_TEXT, &kDown, &selected, &algoMenuHandler);
+	mainMenu = new Menu(MENU_TEXT, &mainMenuHandler);
+	settingsMenu = new Menu(SETTINGS_TEXT, &settingsMenuHandler);
+	algoMenu = new Menu(ALGO_TEXT, &algoMenuHandler);
 
 	activeMenu = mainMenu;
 
@@ -80,15 +74,21 @@ int main(int argc, char *argv[])
 		hidScanInput();
 
 		kDown = hidKeysDown();
+		gspWaitForVBlank();
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 		C2D_TargetClear(top, clrClear);
 		C2D_SceneBegin(top);
-
-		gspWaitForVBlank();
-		Menu::clearConsole();
-
-		printf("\x1b[%i;1H%s", selected + 1, selector);
-		activeMenu->draw();
+		
+		
+		activeMenu->handleInput();
+		if (drawMenu > 0)
+		{
+			Menu::clearConsole();
+			printf("\x1b[%i;1H%s", selected + 1, selector);
+			activeMenu->draw();
+			drawMenu--;
+		}
+		
 
 		if (kDown & KEY_START)
 			break; // break in order to return to hbmenu

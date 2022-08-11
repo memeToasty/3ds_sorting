@@ -22,6 +22,7 @@ extern const char *selector;
 extern int selected;
 
 // Define Menus
+extern short drawMenu;
 extern Menu *mainMenu;
 extern Menu *algoMenu;
 extern Menu *settingsMenu;

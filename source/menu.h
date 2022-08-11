@@ -20,14 +20,12 @@ extern const std::vector<std::string> SETTINGS_TEXT;
 class Menu
 {
     private:
-        u32* kDown;
-        int* selected;
         const std::string selector = ">";
         
     public:
         static void clearConsole();
         int menuLen;
-        Menu(const std::vector<std::string> text, u32* kDown, int *selected, void (*handlerFunction)());
+        Menu(const std::vector<std::string> text, void (*handlerFunction)());
         
         void draw();
         void handleInput();
