@@ -89,7 +89,6 @@ void buildMaxHeap(unsigned int heapSize)
 {
 	for (int i = (int)(floor((double)heapSize / (double)2) + 1); i >= 0; i--)
 	{
-		printf("%i\n", i);
 		maxHeapify(i, heapSize);
 	}
 }
