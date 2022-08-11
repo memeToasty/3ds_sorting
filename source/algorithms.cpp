@@ -41,6 +41,8 @@ void quickSort(int p, int r) {
 
 void quickSortInit(void *arg) {
 	quickSort(0, arrayLen-1);
+	doneSorting = true;
+	finishSorting();
 }
 
 void insertionSort(void *arg)
