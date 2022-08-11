@@ -3,6 +3,7 @@
 #include "menu.h"
 #include "visuals.h"
 #include "sound.h"
+#include "text.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,6 +21,7 @@ int main(int argc, char *argv[])
 	C2D_Init(maxBars);
 	C2D_Prepare();
 	consoleInit(GFX_BOTTOM, NULL);
+	Text::Init();
 
 	// Initialize sounds
 	audioBuffer = (u32 *)linearAlloc(SAMPLESPERBUF * BYTESPERSAMPLE * 2);
@@ -62,13 +64,15 @@ int main(int argc, char *argv[])
 
 	activeMenu = mainMenu;
 
+	Text *test = new Text("Test");
+
 	initArray();
 
 	// Initialize Threads
 	svcGetThreadPriority(&prio, CUR_THREAD_HANDLE);
-	// Main loop
-
 	APT_SetAppCpuTimeLimit(30);
+
+	// Main loop
 	while (aptMainLoop())
 	{
 		hidScanInput();
@@ -88,6 +92,7 @@ int main(int argc, char *argv[])
 			activeMenu->draw();
 			drawMenu--;
 		}
+		//test->render(10.0f,10.0f,0.5f);
 		
 
 		if (kDown & KEY_START)
@@ -108,6 +113,8 @@ int main(int argc, char *argv[])
 		}
 	}
 
+
+	Text::deInit();
 	ndspExit();
 	linearFree(audioBuffer);
 
