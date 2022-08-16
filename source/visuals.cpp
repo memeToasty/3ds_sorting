@@ -33,8 +33,8 @@ void finishSorting()
 void drawArray()
 {
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-	C2D_TargetClear(top, clrClear);
 	C2D_SceneBegin(top);
+	C2D_TargetClear(top, clrClear);
 
 	const float width = (float)SCREEN_WIDTH / (float)arrayLen;
 	for (unsigned int i = 0; i < arrayLen; i++)

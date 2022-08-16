@@ -16,12 +16,12 @@
 
 int main(int argc, char *argv[])
 {
+	Text::Init();
 	gfxInitDefault();
 	C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
 	C2D_Init(maxBars);
 	C2D_Prepare();
 	consoleInit(GFX_BOTTOM, NULL);
-	Text::Init();
 
 	// Initialize sounds
 	audioBuffer = (u32 *)linearAlloc(SAMPLESPERBUF * BYTESPERSAMPLE * 2);
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 
 	activeMenu = mainMenu;
 
-	Text *test = new Text("Test");
+	Text *test = new Text((char*) "Test");
 
 	initArray();
 
@@ -79,9 +79,9 @@ int main(int argc, char *argv[])
 
 		kDown = hidKeysDown();
 		gspWaitForVBlank();
-		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-		C2D_TargetClear(top, clrClear);
-		C2D_SceneBegin(top);
+		// C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+		// C2D_TargetClear(top, clrClear);
+		// C2D_SceneBegin(top);
 		
 		
 		activeMenu->handleInput();
@@ -92,13 +92,14 @@ int main(int argc, char *argv[])
 			activeMenu->draw();
 			drawMenu--;
 		}
-		//test->render(10.0f,10.0f,0.5f);
 		
 
 		if (kDown & KEY_START)
 			break; // break in order to return to hbmenu
 
 		drawArray();
+		test->render(10.0f,10.0f,1.0f);
+
 
 		C3D_FrameEnd(0);
 		gfxFlushBuffers();
@@ -113,6 +114,8 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	threadJoin(sortThread, 10000000LL);
+	threadFree(sortThread);
 
 	Text::deInit();
 	ndspExit();

@@ -7,13 +7,13 @@
 class Text
 {
 private:
+    
+public:
     static C2D_TextBuf textBuf;
     C2D_Text staticText;
     static C2D_Font font;
-    
-public:
+
     Text(char* text);
-    ~Text();
 
 
     void render(float x, float y, float scale);
