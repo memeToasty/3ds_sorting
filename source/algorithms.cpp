@@ -41,6 +41,8 @@ void quickSort(int p, int r) {
 
 void quickSortInit(void *arg) {
 	quickSort(0, arrayLen-1);
+	doneSorting = true;
+	finishSorting();
 }
 
 void insertionSort(void *arg)
@@ -89,7 +91,6 @@ void buildMaxHeap(unsigned int heapSize)
 {
 	for (int i = (int)(floor((double)heapSize / (double)2) + 1); i >= 0; i--)
 	{
-		printf("%i\n", i);
 		maxHeapify(i, heapSize);
 	}
 }
