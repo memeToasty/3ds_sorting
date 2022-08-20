@@ -26,6 +26,7 @@ const std::vector<std::string> SETTINGS_TEXT = {
     "Array Elements",
     "Delay (ms)",
     "New Array",
+	"Toggle tree view",
     "Back"};
 
 
@@ -102,6 +103,9 @@ void settingsMenuHandler()
 			initArray();
 			break;
 		case 3:
+			isTree = !isTree;
+			break;
+		case 4:
 			switchMenu(mainMenu);
 			break;
 

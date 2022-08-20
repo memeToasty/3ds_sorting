@@ -3,9 +3,11 @@
 #include "visuals.h"
 #include "sound.h"
 #include "algorithms.h"
+#include "text.h"
 
 #include <3ds.h>
 #include <citro2d.h>
+#include <math.h>
 
 SwkbdState swkbd;
 char mybuf[10];
@@ -53,6 +55,18 @@ void drawArray()
 	}
 }
 
+void drawTree() 
+{
+	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+	C2D_SceneBegin(top);
+	C2D_TargetClear(top, clrClear);
+	for (size_t i = 0; i < arrayLen; i++)
+	{
+		treeTextArray.at(i)->render();
+	}
+	
+}
+
 void initArray()
 {
 	free(array);
@@ -70,6 +84,20 @@ void initArray()
 	for (unsigned short i = 0; i < arrayLen; ++i)
 	{
 		swap(rand() % arrayLen, i);
+	}
+	// Init Tree view
+
+	unsigned int height = (unsigned int) floor(log(arrayLen));
+	for (unsigned short h = 0; h < height; h++)
+	{
+		float xOffset = SCREEN_WIDTH/h;
+		float yOffset = SCREEN_HEIGHT/h;
+		float gap = xOffset / 2;
+		for (unsigned int c = 0; c < arrayLen / pow(2, h+1); c++)
+		{
+			unsigned int n = pow(2,h+1)-1;
+			treeTextArray.push_back(new Text((char*) array[n],xOffset+c*gap,yOffset,0.5f));
+		}
 	}
 }
 unsigned int inputNum()

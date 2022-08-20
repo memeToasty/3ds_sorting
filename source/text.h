@@ -12,11 +12,14 @@ public:
     static C2D_TextBuf textBuf;
     C2D_Text staticText;
     static C2D_Font font;
+    float xPos;
+    float yPos;
+    float textScale;
 
-    Text(char* text);
+    Text(char* text, float x, float y, float scale);
 
 
-    void render(float x, float y, float scale);
+    void render();
 
 
     static void Init();

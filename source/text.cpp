@@ -4,7 +4,7 @@
 C2D_TextBuf Text::textBuf;
 C2D_Font Text::font;
 
-void Text::Init() 
+void Text::Init()
 {
     cfguInit();
     Text::textBuf = C2D_TextBufNew(4096);
@@ -18,17 +18,20 @@ void Text::deInit()
     cfguExit();
 }
 
-
-Text::Text(char* text)
+Text::Text(char *text, float x, float y, float scale)
 {
-    if (font == NULL) {
+    if (font == NULL)
+    {
         this->~Text();
     }
+    this->xPos = x;
+    this->yPos = y;
+    this->textScale = scale;
     C2D_TextFontParse(&staticText, font, textBuf, text);
     C2D_TextOptimize(&staticText);
 }
 
-void Text::render(float x, float y, float scale)
+void Text::render()
 {
-    C2D_DrawText(&staticText, 0, x, y, 0.0f, scale, scale);
+    C2D_DrawText(&staticText, 0, xPos, yPos, 0.0f, textScale, textScale);
 }

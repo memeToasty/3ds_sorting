@@ -64,7 +64,6 @@ int main(int argc, char *argv[])
 
 	activeMenu = mainMenu;
 
-	Text *test = new Text((char*) "Test");
 
 	initArray();
 
@@ -92,13 +91,18 @@ int main(int argc, char *argv[])
 			activeMenu->draw();
 			drawMenu--;
 		}
-		
+
+		if (isTree)
+		{
+			drawTree();
+		} else 
+		{
+			drawArray();
+		}
 
 		if (kDown & KEY_START)
 			break; // break in order to return to hbmenu
 
-		drawArray();
-		test->render(10.0f,10.0f,1.0f);
 
 
 		C3D_FrameEnd(0);
