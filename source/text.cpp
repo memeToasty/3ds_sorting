@@ -18,7 +18,7 @@ void Text::deInit()
     cfguExit();
 }
 
-Text::Text(const char* text, float* x, float* y, float scale)
+Text::Text(const char* text, float x, float y, float scale)
 {
     this->xPos = x;
     this->yPos = y;
@@ -33,5 +33,5 @@ void Text::render()
 { 
     C2D_TextFontParse(&staticText, font, textBuf, text);
     C2D_TextOptimize(&staticText);
-    C2D_DrawText(&staticText, 0, *xPos, *yPos, 0.0f, textScale, textScale);
+    C2D_DrawText(&staticText, 0, xPos, yPos, 0.0f, textScale, textScale);
 }
