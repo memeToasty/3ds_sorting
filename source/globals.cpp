@@ -1,5 +1,4 @@
-#include "globals.h"
-#include "menu.h"
+#include "globals.hpp"
 
 #include <citro2d.h>
 #include <stdio.h>
@@ -23,6 +22,8 @@ u32 kDown = 0;
 int selected = 0;
 unsigned int arrayLen = 10;
 unsigned int delayMs = 2;
+bool isTree = false;
+std::vector<Node*> nodeArray;
 
 short drawMenu = 1;
 Menu *mainMenu;

@@ -1,3 +1,0 @@
-make
-./build.sh
-lftp -e 'cd /cias; put 3ds_sorting.cia; cd /3ds; put 3ds_sorting.3dsx; bye' -u USERNAME,PASSWORD IP:PORT

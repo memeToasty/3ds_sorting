@@ -41,11 +41,13 @@ GRAPHICS	:=	gfx
 ROMFS		:=	romfs
 GFXBUILD	:=	$(ROMFS)/gfx
 
+META        := meta
+
 APP_TITLE   := Sorting-Algorithms
 APP_DESCRIPTION := A visualisation of sorting algorithms
 APP_AUTHOR := memeToasty
 
-ICON        := meta/icon.png
+ICON        := $(META)/icon.png
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -152,7 +154,7 @@ ifneq ($(ROMFS),)
 	export _3DSXFLAGS += --romfs=$(CURDIR)/$(ROMFS)
 endif
 
-.PHONY: all clean
+.PHONY: all clean deploy
 
 #---------------------------------------------------------------------------------
 all:
@@ -162,7 +164,9 @@ all:
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@rm -fr $(BUILD) $(TARGET).3dsx $(OUTPUT).smdh $(TARGET).elf
+	@rm -fr $(BUILD) $(TARGET).3dsx $(OUTPUT).smdh $(TARGET).elf $(OUTPUT).cia
+deploy: all
+	3dslink -a $(shell cat HOSTNAME.txt) $(TARGET).3dsx
 
 
 #---------------------------------------------------------------------------------
@@ -171,6 +175,11 @@ else
 #---------------------------------------------------------------------------------
 # main targets
 #---------------------------------------------------------------------------------
+
+$(OUTPUT).cia:  $(OUTPUT).3dsx
+	@bannertool makebanner -ci ../$(META)/COMMON.cgfx -a ../$(META)/jingle.wav -o ../$(META)/banner.bnr
+	@makerom -f cia -o $(OUTPUT).cia -banner ../$(META)/banner.bnr -elf $(OUTPUT).elf -rsf ../$(META)/rominfo.rsf -icon ../$(META)/icon.icn
+
 $(OUTPUT).3dsx	:	$(OUTPUT).elf $(_3DSXDEPS)
 
 $(OFILES_SOURCES) : $(HFILES)

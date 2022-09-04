@@ -7,6 +7,7 @@ extern char mybuf[10];
 void accessElement(unsigned int accessedIndex);
 void finishSorting();
 void drawArray();
+void drawTree();
 void initArray();
 unsigned int inputNum();
 

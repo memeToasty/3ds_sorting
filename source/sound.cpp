@@ -1,4 +1,4 @@
-#include "sound.h"
+#include "sound.hpp"
 
 #include <stdio.h>
 #include <math.h>

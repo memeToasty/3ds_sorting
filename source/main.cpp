@@ -1,8 +1,9 @@
-#include "globals.h"
-#include "algorithms.h"
-#include "menu.h"
-#include "visuals.h"
-#include "sound.h"
+#include "globals.hpp"
+#include "algorithms.hpp"
+#include "menu.hpp"
+#include "visuals.hpp"
+#include "sound.hpp"
+#include "text.hpp"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,6 +16,7 @@
 
 int main(int argc, char *argv[])
 {
+	Text::Init();
 	gfxInitDefault();
 	C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
 	C2D_Init(maxBars);
@@ -62,22 +64,23 @@ int main(int argc, char *argv[])
 
 	activeMenu = mainMenu;
 
+
 	initArray();
 
 	// Initialize Threads
 	svcGetThreadPriority(&prio, CUR_THREAD_HANDLE);
-	// Main loop
-
 	APT_SetAppCpuTimeLimit(30);
+
+	// Main loop
 	while (aptMainLoop())
 	{
 		hidScanInput();
 
 		kDown = hidKeysDown();
 		gspWaitForVBlank();
-		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-		C2D_TargetClear(top, clrClear);
-		C2D_SceneBegin(top);
+		// C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+		// C2D_TargetClear(top, clrClear);
+		// C2D_SceneBegin(top);
 		
 		
 		activeMenu->handleInput();
@@ -88,12 +91,19 @@ int main(int argc, char *argv[])
 			activeMenu->draw();
 			drawMenu--;
 		}
-		
+
+		if (isTree)
+		{
+			drawTree();
+		} else 
+		{
+			drawArray();
+		}
 
 		if (kDown & KEY_START)
 			break; // break in order to return to hbmenu
 
-		drawArray();
+
 
 		C3D_FrameEnd(0);
 		gfxFlushBuffers();
@@ -108,6 +118,10 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	threadJoin(sortThread, 10000000LL);
+	threadFree(sortThread);
+
+	Text::deInit();
 	ndspExit();
 	linearFree(audioBuffer);
 
