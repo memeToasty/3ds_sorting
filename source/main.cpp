@@ -1,9 +1,9 @@
-#include "globals.h"
-#include "algorithms.h"
-#include "menu.h"
-#include "visuals.h"
-#include "sound.h"
-#include "text.h"
+#include "globals.hpp"
+#include "algorithms.hpp"
+#include "menu.hpp"
+#include "visuals.hpp"
+#include "sound.hpp"
+#include "text.hpp"
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,4 +1,4 @@
-#include "text.h"
+#include "text.hpp"
 #include <citro2d.h>
 
 C2D_TextBuf Text::textBuf;
@@ -18,20 +18,20 @@ void Text::deInit()
     cfguExit();
 }
 
-Text::Text(char *text, float x, float y, float scale)
+Text::Text(const char* text, float* x, float* y, float scale)
 {
-    if (font == NULL)
-    {
-        this->~Text();
-    }
     this->xPos = x;
     this->yPos = y;
     this->textScale = scale;
+    this->text = text;
+
     C2D_TextFontParse(&staticText, font, textBuf, text);
     C2D_TextOptimize(&staticText);
 }
 
 void Text::render()
-{
-    C2D_DrawText(&staticText, 0, xPos, yPos, 0.0f, textScale, textScale);
+{ 
+    C2D_TextFontParse(&staticText, font, textBuf, text);
+    C2D_TextOptimize(&staticText);
+    C2D_DrawText(&staticText, 0, *xPos, *yPos, 0.0f, textScale, textScale);
 }

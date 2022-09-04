@@ -1,7 +1,7 @@
-#include "globals.h"
-#include "menu.h"
-#include "algorithms.h"
-#include "visuals.h"
+#include "globals.hpp"
+#include "menu.hpp"
+#include "algorithms.hpp"
+#include "visuals.hpp"
 
 #include <stdio.h>
 #include <stdlib.h>

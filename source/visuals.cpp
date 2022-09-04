@@ -1,9 +1,9 @@
-#include "globals.h"
-#include "helpers.h"
-#include "visuals.h"
-#include "sound.h"
-#include "algorithms.h"
-#include "text.h"
+#include "globals.hpp"
+#include "helpers.hpp"
+#include "visuals.hpp"
+#include "sound.hpp"
+#include "algorithms.hpp"
+#include "text.hpp"
 
 #include <3ds.h>
 #include <citro2d.h>
@@ -57,14 +57,21 @@ void drawArray()
 
 void drawTree() 
 {
+	//TODO: Arrange items in Binary Tree form
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_SceneBegin(top);
 	C2D_TargetClear(top, clrClear);
-	for (size_t i = 0; i < arrayLen; i++)
+	
+	for (unsigned short i = 0; i < nodeArray.size(); i++)
 	{
-		treeTextArray.at(i)->render();
+		Node* node = nodeArray.at(i);
+		node->text->text = std::to_string(array[i]).c_str();
+		
+		node->render(activeIndex == i);
 	}
 	
+	
+	C2D_TextBufClear(Text::textBuf);
 }
 
 void initArray()
@@ -86,17 +93,31 @@ void initArray()
 		swap(rand() % arrayLen, i);
 	}
 	// Init Tree view
-
-	unsigned int height = (unsigned int) floor(log(arrayLen));
-	for (unsigned short h = 0; h < height; h++)
+	nodeArray.clear();
+	for (unsigned short i = 0; i < arrayLen; i++) 
 	{
-		float xOffset = SCREEN_WIDTH/h;
-		float yOffset = SCREEN_HEIGHT/h;
-		float gap = xOffset / 2;
-		for (unsigned int c = 0; c < arrayLen / pow(2, h+1); c++)
-		{
-			unsigned int n = pow(2,h+1)-1;
-			treeTextArray.push_back(new Text((char*) array[n],xOffset+c*gap,yOffset,0.5f));
+		nodeArray.push_back(new Node(&std::to_string(array[i]).c_str()[0],0,i*10, 0.5f));
+	}
+
+	unsigned short height = (unsigned short) floor(log2(nodeArray.size()));
+	float yGap = SCREEN_HEIGHT / height;
+	//Go through every layer of binary tree with size of the nodeArray
+	for (unsigned short h = 0; h <= height; ++h) {
+		
+		float leftOffset = SCREEN_WIDTH * (1.0f / (pow(2, h+1)));
+		float xGap = (SCREEN_WIDTH) / pow(2,h);
+		// Go through every object on that layer
+		for (unsigned short i = 0; i < (unsigned short) pow(2,h); ++i) {
+			int absoluteI = pow(2,h) - 1 + i;
+
+			if (absoluteI > (int) nodeArray.size() - 1) {
+				break;
+			}
+			
+			Node* currentNode = nodeArray.at(absoluteI);
+			
+			currentNode->x = leftOffset + i * xGap;
+			currentNode->y = h * yGap;
 		}
 	}
 }

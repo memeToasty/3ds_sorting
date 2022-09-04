@@ -7,20 +7,14 @@ Visualisation of some sorting algorithms on the Nintendo 3DS
 - [`makerom`](https://github.com/3DSGuy/Project_CTR/releases/tag/makerom-v0.18.3)
 - [`bannertool`](https://github.com/Steveice10/bannertool/releases/tag/1.2.0)
 ### "Auto"-Deployment
-- `lftp`
-    - `sudo apt install lftp`
-- [ftpd](https://github.com/mtheall/ftpd): A FTP server on the Nintendo 3DS
+- [`3dslink`](https://github.com/devkitPro/3dslink)
 ## Building
-### .3dsx
-`make`
-### .cia
-`./build.sh`
+To build the `.3dsx` and `.cia`, just run `make`
+
 ## Deployment
-Replace `USERNAME`, `PASSWORD`, `IP` and `PORT` in the `deploy.sh.example`
-```
-mv deploy.sh.example deploy.sh
-./deploy.sh
-```
+Replace `IP ADDRESS` in `HOSTNAME.txt` with the address shown when pressing `Y` in the `HomeBrew Launcher`
+
+`make deploy`
 ## Usage
 
 

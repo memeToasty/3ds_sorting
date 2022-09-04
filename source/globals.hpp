@@ -1,8 +1,8 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#include "menu.h"
-#include "text.h"
+#include "menu.hpp"
+#include "node.hpp"
 
 #include <3ds.h>
 #include <stdio.h>
@@ -42,7 +42,7 @@ extern const unsigned int maxArrayVal;
 extern unsigned int delayMs;
 
 extern bool isTree;
-extern std::vector<Text*> treeTextArray;
+extern std::vector<Node*> nodeArray;
 
 // Render stuff
 extern C3D_RenderTarget *top;
