@@ -1,14 +1,18 @@
-#include "globals.h"
-#include "helpers.h"
-#include "visuals.h"
-#include "sound.h"
-#include "algorithms.h"
+#include "globals.hpp"
+#include "helpers.hpp"
+#include "visuals.hpp"
+#include "sound.hpp"
+#include "algorithms.hpp"
+#include "text.hpp"
 
 #include <3ds.h>
 #include <citro2d.h>
+#include <math.h>
 
 SwkbdState swkbd;
 char mybuf[10];
+
+static const int PADDING = 30;
 
 void accessElement(unsigned int accessedIndex)
 {
@@ -33,8 +37,8 @@ void finishSorting()
 void drawArray()
 {
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-	C2D_TargetClear(top, clrClear);
 	C2D_SceneBegin(top);
+	C2D_TargetClear(top, clrClear);
 
 	const float width = (float)SCREEN_WIDTH / (float)arrayLen;
 	for (unsigned int i = 0; i < arrayLen; i++)
@@ -51,6 +55,25 @@ void drawArray()
 			C2D_DrawRectSolid(x, y, 0, width, height, bar_clr);
 		}
 	}
+}
+
+void drawTree() 
+{
+	//TODO: Arrange items in Binary Tree form
+	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+	C2D_SceneBegin(top);
+	C2D_TargetClear(top, clrClear);
+	
+	for (unsigned short i = 0; i < nodeArray.size(); i++)
+	{
+		Node* node = nodeArray.at(i);
+		node->text->text = std::to_string(array[i]).c_str();
+		
+		node->render(activeIndex == i);
+	}
+	
+	
+	C2D_TextBufClear(Text::textBuf);
 }
 
 void initArray()
@@ -70,6 +93,27 @@ void initArray()
 	for (unsigned short i = 0; i < arrayLen; ++i)
 	{
 		swap(rand() % arrayLen, i);
+	}
+	// Init Tree view
+	nodeArray.clear();
+
+	unsigned short height = (unsigned short) floor(log2(arrayLen));
+	float yGap = (SCREEN_HEIGHT  - (2 * PADDING)) / height;
+	//Go through every layer of binary tree with size of the nodeArray
+	for (unsigned short h = 0; h <= height; ++h) {
+		
+		float leftOffset = SCREEN_WIDTH * (1.0f / (pow(2, h+1)));
+		float xGap = (SCREEN_WIDTH) / pow(2,h);
+		// Go through every object on that layer
+		for (unsigned short i = 0; i < (unsigned short) pow(2,h); ++i) {
+			int absoluteI = pow(2,h) - 1 + i;
+
+			if (absoluteI > (int) arrayLen - 1) {
+				break;
+			}
+			
+			nodeArray.push_back(new Node(std::to_string(array[i]).c_str(), leftOffset + i * xGap, h * yGap + PADDING, 10.0f / arrayLen ));
+		}
 	}
 }
 unsigned int inputNum()

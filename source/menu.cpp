@@ -1,7 +1,7 @@
-#include "globals.h"
-#include "menu.h"
-#include "algorithms.h"
-#include "visuals.h"
+#include "globals.hpp"
+#include "menu.hpp"
+#include "algorithms.hpp"
+#include "visuals.hpp"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,6 +26,7 @@ const std::vector<std::string> SETTINGS_TEXT = {
     "Array Elements",
     "Delay (ms)",
     "New Array",
+	"Toggle tree view",
     "Back"};
 
 
@@ -102,6 +103,9 @@ void settingsMenuHandler()
 			initArray();
 			break;
 		case 3:
+			isTree = !isTree;
+			break;
+		case 4:
 			switchMenu(mainMenu);
 			break;
 
