@@ -10,10 +10,10 @@ class Node {
         static const u32 activeColor = C2D_Color32(0xFF, 0x00, 0x00, 0xFF);
     public:
         Text* text;
-        float x,y ;
-        float size;
+        float x,y;
+        float scale;
 
-        Node(const char* text, float x, float y, float size);
+        Node(const char* text, float x, float y, float scale);
 
         void render(bool active);
 };

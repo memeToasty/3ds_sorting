@@ -12,6 +12,8 @@
 SwkbdState swkbd;
 char mybuf[10];
 
+static const int PADDING = 30;
+
 void accessElement(unsigned int accessedIndex)
 {
 	activeIndex = accessedIndex;
@@ -94,13 +96,9 @@ void initArray()
 	}
 	// Init Tree view
 	nodeArray.clear();
-	for (unsigned short i = 0; i < arrayLen; i++) 
-	{
-		nodeArray.push_back(new Node(&std::to_string(array[i]).c_str()[0],0,i*10, 0.5f));
-	}
 
-	unsigned short height = (unsigned short) floor(log2(nodeArray.size()));
-	float yGap = SCREEN_HEIGHT / height;
+	unsigned short height = (unsigned short) floor(log2(arrayLen));
+	float yGap = (SCREEN_HEIGHT  - (2 * PADDING)) / height;
 	//Go through every layer of binary tree with size of the nodeArray
 	for (unsigned short h = 0; h <= height; ++h) {
 		
@@ -110,14 +108,11 @@ void initArray()
 		for (unsigned short i = 0; i < (unsigned short) pow(2,h); ++i) {
 			int absoluteI = pow(2,h) - 1 + i;
 
-			if (absoluteI > (int) nodeArray.size() - 1) {
+			if (absoluteI > (int) arrayLen - 1) {
 				break;
 			}
 			
-			Node* currentNode = nodeArray.at(absoluteI);
-			
-			currentNode->x = leftOffset + i * xGap;
-			currentNode->y = h * yGap;
+			nodeArray.push_back(new Node(std::to_string(array[i]).c_str(), leftOffset + i * xGap, h * yGap + PADDING, 10.0f / arrayLen ));
 		}
 	}
 }
