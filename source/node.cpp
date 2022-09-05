@@ -2,21 +2,23 @@
 #include "node.hpp"
 #include <citro2d.h>
 
-Node::Node(const char* text, float x, float y, float size) {
-    this->size = size * 20;
+Node::Node(const char* text, float x, float y, float scale) {
+    this->scale = scale;
     this->x = x;
     this->y = y;
 
-    this->text = new Text(text, this->x, this->y, size);
-    // TODO why the hell does this not work?!
-    this->text->xPos -= this->text->staticText.width;
+    this->text = new Text(text, x, y, scale);
 }
 
 void Node::render(bool active) {
+
+    this->text->xPos = this->x - (this->text->staticText.width / 2 * scale);
+    this->text->yPos = this->y - (this->scale * 15);
+
     if (active) {
-        C2D_DrawCircleSolid(x, y, 0, size, activeColor);
+        C2D_DrawCircleSolid(x, y, 0, scale * 15, activeColor);
     } else {
-        C2D_DrawCircleSolid(x, y, 0, size, color);
+        C2D_DrawCircleSolid(x, y, 0, scale * 15, color);
     }
     this->text->render();
 }

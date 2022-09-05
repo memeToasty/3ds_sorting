@@ -11,9 +11,9 @@ class Node {
     public:
         Text* text;
         float x,y;
-        float size;
+        float scale;
 
-        Node(const char* text, float x, float y, float size);
+        Node(const char* text, float x, float y, float scale);
 
         void render(bool active);
 };
