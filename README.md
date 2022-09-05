@@ -1,4 +1,4 @@
-# 3ds_sorting
+![3DS_Sorting](meta/banner.png)
 Visualisation of some sorting algorithms on the Nintendo 3DS
 # Build
 ## Requirements
