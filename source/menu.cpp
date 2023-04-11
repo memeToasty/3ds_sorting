@@ -20,6 +20,7 @@ const std::vector<std::string> ALGO_TEXT = {
     "Merge Sort",
     "Heap Sort",
     "Quick Sort",
+	"Bubble Sort",
     "Back"};
 
 const std::vector<std::string> SETTINGS_TEXT = {
@@ -140,6 +141,9 @@ void algoMenuHandler()
 			sortThread = threadCreate(quickSortInit, NULL, STACKSIZE, prio - 1, 1, false);
 			break;
 		case 4:
+			sortThread = threadCreate(bubbleSort, NULL, STACKSIZE, prio - 1, 1, false);
+			break;
+		case 5:
 			switchMenu(mainMenu);
 			break;
 

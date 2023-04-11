@@ -21,4 +21,7 @@ void merge(unsigned int p, unsigned int q, unsigned int r);
 void mergeSort(unsigned int p, unsigned int r);
 void mergeSortInit(void *arg);
 
+// Bubble sort
+void bubbleSort(void *arg);
+
 #endif

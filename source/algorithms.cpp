@@ -175,3 +175,21 @@ void mergeSortInit(void *arg)
 	doneSorting = true;
 	finishSorting();
 }
+
+void bubbleSort(void *arg)
+{
+	for (unsigned int i = 0; i < arrayLen; i++)
+	{
+		for (unsigned int j = 0; j < arrayLen - 1; j++)
+		{
+			if (array[j] > array[j + 1])
+			{
+				swap(j, j + 1);
+			}
+			accessElement(j);
+			ThreadSleep(delayMs);
+		}
+	}
+	doneSorting = true;
+	finishSorting();
+}
