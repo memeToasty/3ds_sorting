@@ -42,6 +42,7 @@ extern const unsigned int maxArrayVal;
 extern unsigned int delayMs;
 
 extern bool isTree;
+extern bool newArrayOnStart;
 extern std::vector<Node*> nodeArray;
 
 // Render stuff

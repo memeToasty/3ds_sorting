@@ -24,4 +24,7 @@ void mergeSortInit(void *arg);
 // Bubble sort
 void bubbleSort(void *arg);
 
+// Selection sort
+void selectionSort(void *arg);
+
 #endif

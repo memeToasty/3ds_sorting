@@ -20,9 +20,10 @@ u32 doneClr;
 SwkbdButton button = SWKBD_BUTTON_NONE;
 u32 kDown = 0;
 int selected = 0;
-unsigned int arrayLen = 10;
+unsigned int arrayLen = 30;
 unsigned int delayMs = 2;
 bool isTree = false;
+bool newArrayOnStart = true;
 std::vector<Node*> nodeArray;
 
 short drawMenu = 1;

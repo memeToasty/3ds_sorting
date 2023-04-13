@@ -193,3 +193,23 @@ void bubbleSort(void *arg)
 	doneSorting = true;
 	finishSorting();
 }
+
+void selectionSort(void *arg)
+{
+	for (unsigned int i = 0; i < arrayLen; i++)
+	{
+		unsigned int min = i;
+		for (unsigned int j = i + 1; j < arrayLen; j++)
+		{
+			if (array[j] < array[min])
+			{
+				min = j;
+			}
+			accessElement(j);
+			ThreadSleep(delayMs);
+		}
+		swap(i, min);
+	}
+	doneSorting = true;
+	finishSorting();
+}
