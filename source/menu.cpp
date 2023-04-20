@@ -35,7 +35,11 @@ const std::vector<std::string> SETTINGS_TEXT = {
 const std::vector<std::string> DESCRIPTION_TEXT = {
 	//Write a two sentance description of Insertion Sort at an undergraduate level. Start it with "Insertion Sort works by". Do not write about best case or worst case complexity.
 	" Insertion Sort works by iterating\n through an array and moving each\n element to its correct position by\n comparing it with the previous\n elements. The algorithm maintains a\n sorted subarray and inserts the next\n element in its correct position in the\n subarray.",
-	" Merge Sort works by dividing the\n unsorted list into n sublists, each\n containing one element, and then\n repeatedly merging sublists to produce\n new sorted sublists until there is\n only one sublist remaining. This final\n sublist is the sorted list."
+	" Merge Sort works by dividing the\n unsorted list into n sublists, each\n containing one element, and then\n repeatedly merging sublists to produce\n new sorted sublists until there is\n only one sublist remaining. This final\n sublist is the sorted list.",
+	" Heap Sort works by building a binary\n heap from the input array and\n repeatedly extracting the maximum\n element from the heap and placing it\n at the end of the sorted array. The\n heap is updated after each extraction\n to maintain the heap property.",
+	" Quick Sort works by selecting a\n pivot element from the array and\n partitioning the other elements into\n two subarrays, according to whether\n they are less than or greater than\n the pivot. The subarrays are then\n sorted recursively.",
+	" Bubble Sort works by repeatedly\n iterating through the array and\n swapping adjacent elements if they\n are in the wrong order. The algorithm\n gets its name from the way smaller\n elements \"bubble\" to the top of the\n array.",
+	" Selection Sort works by repeatedly\n finding the minimum element from\n unsorted part and putting it at the\n beginning. The algorithm maintains\n two subarrays in a given array.\n The subarray which is already sorted.\n The subarray which is unsorted."
 };
 
 void Menu::clearConsole()
@@ -167,6 +171,8 @@ void algoMenuHandler()
 				initArray();
 			}
 			sortThread = threadCreate(heapSort, NULL, STACKSIZE, prio - 1, 1, false);
+			printf("\x1b[16;%iH%s\n", (20 - ALGO_TEXT[3].length()/2), ALGO_TEXT[3].c_str());
+			printf("\x1b[19;1H%s\n", DESCRIPTION_TEXT[2].c_str());
 			break;
 		case 4:
 			if (newArrayOnStart)
@@ -174,6 +180,8 @@ void algoMenuHandler()
 				initArray();
 			}
 			sortThread = threadCreate(quickSortInit, NULL, STACKSIZE, prio - 1, 1, false);
+			printf("\x1b[16;%iH%s\n", (20 - ALGO_TEXT[4].length()/2), ALGO_TEXT[4].c_str());
+			printf("\x1b[19;1H%s\n", DESCRIPTION_TEXT[3].c_str());
 			break;
 		case 5:
 			if (newArrayOnStart)
@@ -181,6 +189,8 @@ void algoMenuHandler()
 				initArray();
 			}
 			sortThread = threadCreate(bubbleSort, NULL, STACKSIZE, prio - 1, 1, false);
+			printf("\x1b[16;%iH%s\n", (20 - ALGO_TEXT[5].length()/2), ALGO_TEXT[5].c_str());
+			printf("\x1b[19;1H%s\n", DESCRIPTION_TEXT[4].c_str());
 			break;
 		case 6:
 			if (newArrayOnStart)
@@ -188,6 +198,8 @@ void algoMenuHandler()
 				initArray();
 			}
 			sortThread = threadCreate(selectionSort, NULL, STACKSIZE, prio - 1, 1, false);
+			printf("\x1b[16;%iH%s\n", (20 - ALGO_TEXT[6].length()/2), ALGO_TEXT[6].c_str());
+			printf("\x1b[19;1H%s\n", DESCRIPTION_TEXT[5].c_str());
 			break;
 
 		default:
