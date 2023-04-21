@@ -16,6 +16,9 @@ extern const std::vector<std::string> ALGO_TEXT;
 // Settings text
 extern const std::vector<std::string> SETTINGS_TEXT;
 
+// Description text
+extern const std::vector<std::string> DESCRIPTION_TEXT;
+
 
 class Menu
 {
