@@ -22,7 +22,8 @@ const std::vector<std::string> ALGO_TEXT = {
     "Heap Sort",
     "Quick Sort",
 	"Bubble Sort",
-	"Selection Sort"};
+	"Selection Sort",
+	"Bogo Sort"};
 
 const std::vector<std::string> SETTINGS_TEXT = {
     "Back",
@@ -39,7 +40,8 @@ const std::vector<std::string> DESCRIPTION_TEXT = {
 	" Heap Sort works by building a binary\n heap from the input array and\n repeatedly extracting the maximum\n element from the heap and placing it\n at the end of the sorted array. The\n heap is updated after each extraction\n to maintain the heap property.",
 	" Quick Sort works by selecting a\n pivot element from the array and\n partitioning the other elements into\n two subarrays, according to whether\n they are less than or greater than\n the pivot. The subarrays are then\n sorted recursively.",
 	" Bubble Sort works by repeatedly\n iterating through the array and\n swapping adjacent elements if they\n are in the wrong order. The algorithm\n gets its name from the way smaller\n elements \"bubble\" to the top of the\n array.",
-	" Selection Sort works by repeatedly\n finding the minimum element from\n unsorted part and putting it at the\n beginning. The algorithm maintains\n two subarrays in a given array.\n The subarray which is already sorted.\n The subarray which is unsorted."
+	" Selection Sort works by repeatedly\n finding the minimum element from\n unsorted part and putting it at the\n beginning. The algorithm maintains\n two subarrays in a given array.\n The subarray which is already sorted.\n The subarray which is unsorted.",
+	" Bogo Sort works by repeatedly\n shuffling the array until it is sorted.\n The algorithm is not guaranteed to\n terminate within any finite number\n of steps, but will almost surely\n terminate eventually."
 };
 
 void Menu::clearConsole()
@@ -200,6 +202,15 @@ void algoMenuHandler()
 			sortThread = threadCreate(selectionSort, NULL, STACKSIZE, prio - 1, 1, false);
 			printf("\x1b[16;%iH%s\n", (20 - ALGO_TEXT[6].length()/2), ALGO_TEXT[6].c_str());
 			printf("\x1b[19;1H%s\n", DESCRIPTION_TEXT[5].c_str());
+			break;
+		case 7:
+			if (newArrayOnStart)
+			{
+				initArray();
+			}
+			sortThread = threadCreate(bogoSort, NULL, STACKSIZE, prio - 1, 1, false);
+			printf("\x1b[16;%iH%s\n", (20 - ALGO_TEXT[7].length()/2), ALGO_TEXT[7].c_str());
+			printf("\x1b[19;1H%s\n", DESCRIPTION_TEXT[6].c_str());
 			break;
 
 		default:
