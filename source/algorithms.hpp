@@ -27,4 +27,7 @@ void bubbleSort(void *arg);
 // Selection sort
 void selectionSort(void *arg);
 
+// bogo sort
+void bogoSort(void *arg);
+
 #endif

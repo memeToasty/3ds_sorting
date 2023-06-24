@@ -213,3 +213,34 @@ void selectionSort(void *arg)
 	doneSorting = true;
 	finishSorting();
 }
+
+void bogoSort(void *arg)
+{
+	bool isSorted = false;
+	
+	while (!isSorted)
+	{
+		for (unsigned int i = 0; i < arrayLen; i++)
+		{
+			swap(i, rand() % arrayLen);
+			accessElement(i);
+			ThreadSleep(delayMs);
+		}
+		//check if sorted
+		bool sorted = true;
+		for (unsigned int i = 0; i < arrayLen - 1; i++)
+		{
+			if (array[i] > array[i + 1])
+			{
+				sorted = false;
+				break;
+			}
+		}
+		if (sorted)
+		{
+			break;
+		}
+	}
+	doneSorting = true;
+	finishSorting();
+}
