@@ -21,3 +21,4 @@ Replace `IP ADDRESS` in `HOSTNAME.txt` with the address shown when pressing `Y` 
 # Credits
 - [PUREBEATS](https://www.youtube.com/PUREBEATS "YouTube PUREBEATS") for the amazing Jingle
 - [Tom](https://github.com/TomRomeo "GitHub Tom") for the help with the 3D-modeling
+- [Julian](https://github.com/JLO64 "GitHub Julian Lopez") for the great algorithm additions and QoL improvements
